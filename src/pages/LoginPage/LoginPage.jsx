@@ -53,7 +53,7 @@ export default function LoginPage(props) {
                 verticalAlign="middle"
             >
                 <Grid.Column style={{ maxWidth: 450 }}>
-                    <Header as="h2" color="red" textAlign="center">
+                    <Header as="h2" color="blue" textAlign="center">
                         <span className="signupText">Login </span>
                         <i>
                             <span className='alreadyClientText'>Not a client?</span>

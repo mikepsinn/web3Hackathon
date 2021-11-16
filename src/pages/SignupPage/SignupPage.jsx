@@ -116,7 +116,7 @@ export default function SignUpPage(props) {
                 verticalAlign="middle"
             >
                 <Grid.Column style={{ maxWidth: 700 }} className="signupForm">
-                    <Header as="h2" color="red" textAlign="center">
+                    <Header as="h2" color="blue" textAlign="center">
                         <span className="signupText">Register </span>
                         <i>
                             <u>

@@ -1,0 +1,30 @@
+#inputCont {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-areas: "name check";
+}
+#checkboxCont {
+    display: grid;
+    grid-area: check;
+    grid-template-areas: "box label";
+    /* margin-left: 8em; */
+}
+
+#nameLabelClient {
+    display: grid;
+    grid-area: name;
+    margin-right: 8em;
+}
+
+#checkBoxClient {
+    display: grid;
+    grid-area: box;
+}
+
+#boxCont {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    top: 0.2em;
+    left: 1em;
+}
