@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import { Grid, Header, Form, Segment, Button, Icon } from "semantic-ui-react";
 import userService from "../../utils/userService";
@@ -11,10 +11,11 @@ export default function SignUpPage(props) {
     const history = useHistory();
     const [error, setError] = useState('')
     const [formInput, setFormInput] = useState({
-        username: "",
+        employeeId: "",
         password: "",
         confirmPassword: "",
         email: "",
+        accessToken: ''
     });
 
     function handleInput(e) {
@@ -28,16 +29,12 @@ export default function SignUpPage(props) {
     function handleValidation() {
         let formIsValid = true;
 
-        //Name
+        //Employee ID
 
-        if (typeof formInput.username !== "undefined") {
-            if (!formInput.username.length > 6) {
+        if (typeof formInput.employeeId !== "undefined") {
+            if (!validator.isNumeric(formInput.employeeId)) {
                 formIsValid = false;
-                setError('Username must be at least 6 characters')
-            }
-            if (!validator.isAlphanumeric(formInput.username)) {
-                formIsValid = false;
-                setError('Username must be alpha-numeric')
+                setError('ID must be numbers only')
             }
         }
 
@@ -67,7 +64,7 @@ export default function SignUpPage(props) {
                 minLowercase: 1,
                 minUppercase: 1,
                 minNumbers: 1,
-                // minSymbols: 1, 
+                minSymbols: 0,
                 returnScore: false,
                 pointsPerUnique: 1,
                 pointsPerRepeat: 0.5,
@@ -89,16 +86,19 @@ export default function SignUpPage(props) {
                 setError('Passwords do not match')
             }
         }
-        console.log(formIsValid)
         return formIsValid;
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
         if (handleValidation()) {
-            userService.signup(formInput);
+            try {
+                await userService.signup(formInput);
+                history.push("/index");
+            } catch (err) {
+                setError(err.message)
+            }
         }
-        history.push("/index");
     }
 
     useEffect(() => {
@@ -119,7 +119,6 @@ export default function SignUpPage(props) {
                     <Header as="h2" color="red" textAlign="center">
                         <span className="signupText">Register </span>
                         <i>
-                            <span className='alreadyClientText'>Already a client?</span>
                             <u>
                                 <Link to='/login' style={{ color: 'black' }}>
                                     <span className='loginText'>Login</span>
@@ -131,31 +130,39 @@ export default function SignUpPage(props) {
 
                     <br />
                     <Form autoComplete="off" onSubmit={handleSubmit}>
-                        {/* <Segment stacked className="signupForm"> */}
-                        <label className='formLabel'>Username <span style={{ fontSize: '8px' }}>(at least 6 characters alpha-numeric)</span></label>
+                        <label className='formLabel'>Employee ID </label>
                         <Form.Input
-                            class='test'
-                            name="username"
-                            placeholder="username"
-                            value={formInput.username}
+                            name="employeeId"
+                            placeholder="Employee ID"
+                            value={formInput.employeeId}
                             onChange={handleInput}
                             required
                         />
-                        <label className='formLabel'>Email</label>
+                        <label className='formLabel'>Company Email</label>
                         <Form.Input
                             type="email"
                             name="email"
-                            placeholder="email"
+                            placeholder="Email"
                             value={formInput.email}
                             onChange={handleInput}
                             required
                         />
                         <br />
-                        <label className='formLabel'>Password <br /> <span style={{ fontSize: '8px' }}>must contain at least 1: uppercase, lowercase, number and symbol</span></label>
+                        <label className='formLabel'>Access Token</label>
+                        <Form.Input
+                            type="accessToken"
+                            name="accessToken"
+                            placeholder="Access Token"
+                            value={formInput.accessToken}
+                            onChange={handleInput}
+                            required
+                        />
+                        <br />
+                        <label className='formLabel'>Password <br /> <span style={{ fontSize: '8px' }}>must contain at least 1: uppercase, lowercase, number</span></label>
                         <Form.Input
                             name="password"
                             type="password"
-                            placeholder="password"
+                            placeholder="Password"
                             value={formInput.password}
                             onChange={handleInput}
                             required
@@ -174,7 +181,6 @@ export default function SignUpPage(props) {
                         <Button type="submit" className="btn" id="signupButton">
                             Register
                         </Button>
-                        {/* </Segment> */}
                     </Form>
                 </Grid.Column>
             </Grid>

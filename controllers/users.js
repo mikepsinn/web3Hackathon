@@ -1,10 +1,8 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET;
-// const { v4: uuidv4 } = require('uuid');
-// const S3 = require('aws-sdk/clients/s3');
-// const s3 = new S3(); // initialize the construcotr
-// now s3 can crud on our s3 buckets
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN
+
 
 module.exports = {
   signup,
@@ -12,14 +10,18 @@ module.exports = {
 };
 
 async function signup(req, res) {
-  const user = new User(req.body);
-  try {
-    await user.save();
-    const token = createJWT(user);
-    res.json({ token });
-  } catch (err) {
-    console.log('catch error', err)
-    res.status(400).json(err);
+  if (req.body.accessToken === ACCESS_TOKEN) {
+    const user = new User(req.body);
+    try {
+      await user.save();
+      const token = createJWT(user);
+      res.json({ token });
+    } catch (err) {
+      console.log('catch error', err)
+      return res.status(400).json(err);
+    }
+  } else {
+    return res.status(401).json({ err: 'access token invalid' })
   }
 }
 

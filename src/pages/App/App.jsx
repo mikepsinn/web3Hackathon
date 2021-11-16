@@ -5,6 +5,7 @@ import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../utils/userService'
 import Navbar from '../../components/Navbar/Navbar'
+import AddClient from '../AddClient/AddClient';
 
 function App() {
 
@@ -33,13 +34,16 @@ function App() {
           <SignupPage handleSignUpOrLogin={handleSignUpOrLogin} />
         </Route>
         <Route exact path="/index">
-                Home/Landing PAGE COMPONENT WOULD GO HEREE
-              </Route>
+          Home/Landing PAGE COMPONENT WOULD GO HEREE
+        </Route>
         {userService.getUser() ?
           <>
             <Switch>
               <Route exact path='/profile'>
                 profile page here!
+              </Route>
+              <Route exact path='/addclient'>
+                <AddClient />
               </Route>
             </Switch>
           </>

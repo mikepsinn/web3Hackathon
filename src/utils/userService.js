@@ -6,15 +6,21 @@ const BASE_URL = '/api/users/';
 // NOTE THIS IS configured to send of a multi/part form request
 // aka photo 
 function signup(user) {
-  console.log('hitting')
   return fetch(BASE_URL + "signup", {
     method: "POST",
     body: JSON.stringify(user),
     headers: { "Content-type": "application/json" },
   })
     .then((res) => {
-      if (res.ok) return res.json();
-      throw new Error("Email already taken!");
+      if (res.ok) {
+        return res.json()
+      } else if (res.status == 401) {
+        throw new Error('invalid access token')
+      } else {
+        console.log(false)
+        return new Error("Email already taken!");
+      }
+
     })
     .then(({ token }) => tokenService.setToken(token));
 }
