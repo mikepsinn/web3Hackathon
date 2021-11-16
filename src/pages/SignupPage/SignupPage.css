@@ -1,0 +1,41 @@
+.formLabel {
+    display: table;
+    text-align: left;
+    margin-left: 0.8em;
+    margin-bottom: 0.5em;
+    /* color: red; */
+}
+
+.ui.input {
+    border: none;
+}
+.ui.form .field .ui.input input,
+.ui.form .fields .field .ui.input input {
+    /* border: none; */
+    border-bottom: solid black 1px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+    margin-bottom: 1em;
+}
+
+.signupForm {
+    margin: 1.5em;
+}
+
+.alreadyClientText {
+    font-size: 12px;
+    margin-left: 1em;
+}
+.loginText {
+    font-size: 12px;
+    margin-left: 0.5em;
+}
+.loginTextIcon {
+    font-size: 10px;
+    margin-left: 0.5em;
+}
+#loginIcon {
+    margin-left: -0.4em;
+}

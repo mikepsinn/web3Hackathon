@@ -1,0 +1,69 @@
+#loggedUserNavButton {
+    position: absolute;
+    right: 6em;
+    margin-top: 0.5em;
+    background-color: rgba(128, 128, 128, 0.204);
+    padding: 0.5em 2em;
+    border-radius: 0.3em;
+    color: black;
+}
+#loggedUserNavButton:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.4);
+}
+#homeNavButton {
+    position: absolute;
+    left: 6em;
+    margin-top: 0.5em;
+    background-color: rgba(128, 128, 128, 0.204);
+    padding: 0.5em 2em;
+    border-radius: 0.3em;
+    color: black;
+}
+#homeNavButton:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.4);
+}
+
+#navCont {
+    background-color: burlywood;
+    height: 3.6em;
+}
+#profileIcon {
+    position: absolute;
+    top: 0.6em;
+    right: 1em;
+}
+#downArrowIcon {
+    position: absolute;
+    top: 1.5em;
+    right: 4.3em;
+}
+/* Dropdown menu CSS */
+#dropdown {
+    border: solid black 1px;
+    position: absolute;
+    right: 0em;
+    display: table-column;
+    align-items: start;
+    width: fit-content;
+    height: fit-content;
+    top: 3.5em;
+    z-index: 9998;
+    background-color: rgb(231, 231, 231);
+}
+#dropdownCont:hover {
+    cursor: pointer;
+}
+/* buttons/links */
+.dropdownItem {
+    color: black;
+    display: flex;
+    left: 0.2em;
+    z-index: 9999;
+    padding: 0.5em 1.5em;
+}
+.dropdownItem:hover {
+    background-color: rgba(207, 207, 207, 0.663);
+    color: antiquewhite;
+}
