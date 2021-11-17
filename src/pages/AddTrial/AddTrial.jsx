@@ -63,7 +63,7 @@ export default function AddTrial() {
 
             <Grid
                 textAlign="center"
-                style={{ height: "100vh" }}
+                style={{ margin: "1em" }}
                 verticalAlign="middle"
             >
                 <Grid.Column style={{ maxWidth: 425 }}>

@@ -55,7 +55,7 @@ export default function Find() {
         );
     } else {
         return (
-            <Segment style={{ maxWidth: 450, margin: 'auto', marginTop: '10vh' }}>
+            <Segment style={{ maxWidth: 450, margin: 'auto', marginTop: '1em', border: 'none' }}>
                 <Header>
                     Find
                 </Header>

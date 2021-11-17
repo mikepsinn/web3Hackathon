@@ -40,6 +40,7 @@ export default function TrialsFind(props) {
         setLoading(false)
 
     }
+
     if (loading) {
         return (
             <Grid

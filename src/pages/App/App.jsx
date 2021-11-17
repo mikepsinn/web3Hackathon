@@ -8,6 +8,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import AddClient from '../AddClient/AddClient';
 import AddTrial from '../AddTrial/AddTrial';
 import Find from '../Find/Find';
+import Home from '../Home/Home';
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
           <SignupPage handleSignUpOrLogin={handleSignUpOrLogin} />
         </Route>
         <Route exact path="/index">
-          Home/Landing PAGE COMPONENT WOULD GO HEREE
+          <Home />
         </Route>
         {userService.getUser() ?
           <>

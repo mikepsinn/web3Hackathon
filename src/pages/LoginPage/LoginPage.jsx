@@ -11,6 +11,7 @@ import {
     Button,
     Icon,
 } from "semantic-ui-react";
+import HeaderImage from "../../components/MOLECULES/HeaderImage";
 
 export default function LoginPage(props) {
     const history = useHistory();
@@ -49,20 +50,17 @@ export default function LoginPage(props) {
         <>
             <Grid
                 textAlign="center"
-                style={{ height: "100vh" }}
+                style={{ margin: "1em" }}
                 verticalAlign="middle"
             >
                 <Grid.Column style={{ maxWidth: 450 }}>
                     <Header as="h2" color="blue" textAlign="center">
                         <span className="signupText">Login </span>
                         <i>
-                            <span className='alreadyClientText'>Not a client?</span>
-                            <u>
-                                <Link to='/register' style={{ color: 'black' }}>
-                                    <span className='loginText'>Register</span>
-                                    <span className='loginTextIcon'><Icon id='loginIcon' className='long arrow alternate right' /></span>
-                                </Link>
-                            </u>
+                            <Link to='/register' style={{ color: 'black' }}>
+                                <span className='loginText'>or <u>Register</u></span>
+                                <span className='loginTextIcon'><Icon id='loginIcon' className='long arrow alternate right' /></span>
+                            </Link>
                         </i>
                     </Header>
                     <Form autoComplete="off" onSubmit={handleSubmit}>
