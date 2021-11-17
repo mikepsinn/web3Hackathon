@@ -31,17 +31,10 @@ async function getTrials(req, res) {
 
 async function findClients(req, res) {
     const trial = await Trial.findById(req.params.id)
-    // console.log(trial.clients[0])
-    let clients = trial.clients.map(async (client) => {
-        await Client.findById(client).lean()
-    })
-    console.log(clients)
-
-    res.status(200).json('yay')
+    try {
+        clients = await Client.find({ _id: { $in: trial.clients } })
+        res.status(200).json({ clients })
+    } catch (err) {
+        return res.status(400).json(err)
+    }
 }
-
-//     console.log('-------------->', clients)
-
-//     console.log(trial)
-//     res.json('yay')
-// }
