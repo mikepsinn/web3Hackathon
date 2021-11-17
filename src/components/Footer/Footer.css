@@ -1,0 +1,8 @@
+#footCont {
+    background-color: #bae7fb;
+    width: 100vw;
+    display: block;
+    position: sticky;
+    height: 2em;
+    bottom: 0;
+}

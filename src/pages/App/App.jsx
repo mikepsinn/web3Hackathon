@@ -5,6 +5,7 @@ import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../utils/userService'
 import Navbar from '../../components/Navbar/Navbar'
+import Footer from '../../components/Footer/Footer';
 import AddClient from '../AddClient/AddClient';
 import AddTrial from '../AddTrial/AddTrial';
 import Find from '../Find/Find';
@@ -61,6 +62,7 @@ function App() {
         }
 
       </Switch>
+      <Footer />
     </div>
   );
 }
