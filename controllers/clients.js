@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const Trial = require('../models/trial');
 const Client = require('../models/client')
 const SECRET = process.env.SECRET;
 
@@ -9,11 +9,21 @@ module.exports = {
 };
 
 async function addClient(req, res) {
-  console.log(req.body)
-  const client = new Client(req.body);
+  console.log(req.body.trialIdentification)
   try {
-    await Client.findByIdAndUpdate(client._id, { user: req.user._id })
+    const client = await new Client({
+      user: req.user._id,
+      walletAddress: req.body.walletAddress,
+      clientName: req.body.name,
+    })
+    await client.trials.push({
+      trialIdentification: req.body.trialIdentification,
+      percentageCompleted: req.body.percentageParticipated
+    })
     await client.save();
+    const trial = await Trial.findOne({ _id: req.body.trialIdentification })
+    await trial.clients.push(client._id)
+    await trial.save()
     res.status(201).json({ msg: 'client added successfully' });
   } catch (err) {
     console.log('catch error', err)

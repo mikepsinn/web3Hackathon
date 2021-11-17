@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Trial = require('../models/trial')
+
+
 
 const SALT_ROUNDS = 6;
 
 const clientSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  name: { type: String, lowercase: true, required: true },
+  clientName: { type: String, lowercase: true, required: true },
   walletAddress: { type: String, required: true, unique: true },
-  percentageParticipated: { type: Number, required: true },
-  trialIdentification: { type: String, required: true }
+  trials: [{
+    trialIdentification: { type: mongoose.Schema.Types.ObjectId, ref: 'Trial' },
+    percentageCompleted: { type: Number },
+  }]
 }, {
   timestamps: true
 });

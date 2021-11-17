@@ -6,6 +6,8 @@ import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../utils/userService'
 import Navbar from '../../components/Navbar/Navbar'
 import AddClient from '../AddClient/AddClient';
+import AddTrial from '../AddTrial/AddTrial';
+import Find from '../Find/Find';
 
 function App() {
 
@@ -44,6 +46,12 @@ function App() {
               </Route>
               <Route exact path='/addclient'>
                 <AddClient />
+              </Route>
+              <Route exact path='/addtrial'>
+                <AddTrial />
+              </Route>
+              <Route exact path='/find'>
+                <Find />
               </Route>
             </Switch>
           </>
