@@ -1,24 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './TrialsFind.css'
 import { Form, Grid, Loader, Table, Button } from 'semantic-ui-react'
 import trialsService from '../../../utils/trialsService'
+import ErrorMessage from '../../ErrorMessage/ErrorMessage'
 
 
 export default function TrialsFind(props) {
     const [loading, setLoading] = useState(false)
     const [show, setShow] = useState(true)
+    const [error, setError] = useState()
+    const [currentTrial, setCurrentTrial] = useState()
     const [formInput, setFormInput] = useState({
         trial: ''
     })
     const [clients, setClients] = useState()
 
-    const handleSelect = (e, { value }) => setFormInput({ ...formInput, ['trial']: value });
+
+    function handleSelect(e, { value }) {
+        setFormInput({ ...formInput, ['trial']: value })
+        setCurrentTrial(value)
+    }
 
     function toggle(e) {
         e.preventDefault()
         setShow(true)
     }
 
+    async function backendPayload(arr, trial) {
+        let payload = { trialId: trial, participants: arr }
+        console.log(payload)
+    }
 
 
     function percentByTrial(client) {
@@ -41,6 +52,31 @@ export default function TrialsFind(props) {
         setLoading(false)
 
     }
+
+    async function handleDividends() {
+        const clientPayload = []
+        clients.forEach((client) => {
+            client.trials.forEach((trial, i) => {
+                if (trial.trialIdentification === currentTrial) {
+                    clientPayload.push(trial)
+                }
+            })
+        })
+        try {
+            backendPayload(clientPayload, currentTrial)
+            // history.push('/success')
+        } catch (err) {
+            setError(err)
+        }
+    }
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setError(null);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [error]);
 
     if (loading) {
         return (
@@ -90,7 +126,6 @@ export default function TrialsFind(props) {
                             <Table.Row>
                                 <Table.HeaderCell width={8}>ETH Wallet Address</Table.HeaderCell>
                                 <Table.HeaderCell width={1} >% Completed</Table.HeaderCell>
-                                {/* <Table.HeaderCell width={3}>Name</Table.HeaderCell> */}
                             </Table.Row>
                         </Table.Header>
 
@@ -99,51 +134,21 @@ export default function TrialsFind(props) {
                                 return (
                                     <>
                                         <Table.Row key={i}>
-                                            <Table.Cell style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
-                                            <Table.Cell>{percentByTrial(client)}</Table.Cell>
+                                            <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
+                                            <Table.Cell key={i, 1}>{percentByTrial(client)}</Table.Cell>
                                         </Table.Row>
                                     </>
                                 )
                             })}
-
-                            {/* <Table.Row>
-                                <Table.Cell>Cell</Table.Cell>
-                                <Table.Cell>Cell</Table.Cell>
-                                <Table.Cell>Cell</Table.Cell>
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.Cell>Cell</Table.Cell>
-                                <Table.Cell>Cell</Table.Cell>
-                                <Table.Cell>Cell</Table.Cell>
-                            </Table.Row>
-                            <Table.Row>
-                                <Table.Cell>Cell</Table.Cell>
-                                <Table.Cell>Cell</Table.Cell>
-                                <Table.Cell>Cell</Table.Cell>
-                            </Table.Row> */}
                         </Table.Body>
                         <Table.Footer></Table.Footer>
                     </Table>
                     <Button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</Button>
-                    <Button>Send Money</Button>
+                    <Button onClick={handleDividends}>Send Dividends</Button>
+                    <ErrorMessage error={error} />
                 </>
             )
         }
 
     }
 }
-
-
-// {clients.map((client, i) => {
-//     return (
-//         <>
-//             <tr>
-//                 <td>{client.walletAddress}</td>
-//                 <td>{percentByTrial(client)}</td>
-//                 <td>{client.name}</td>
-//             </tr>
-
-//             {/* <h6 key={i}>{client.walletAddress} + {percentByTrial(client)}</h6> */}
-//         </>
-//     )
-// })}

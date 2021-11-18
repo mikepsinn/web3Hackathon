@@ -6,6 +6,7 @@ import SuccessMessage from '../../components/SuccessMessage/SuccessMessage'
 import clientService from '../../utils/clientService'
 import { Slider } from '@mui/material'
 import trialsService from "../../utils/trialsService";
+import { ethers } from "ethers";
 
 
 export default function AddClient() {
@@ -32,7 +33,7 @@ export default function AddClient() {
             [e.target.name]: e.target.value,
         });
     }
-    function handleValidation() {
+    async function handleValidation() {
         let formIsValid = true;
         if (formInput.trialIdentification == '' || formInput.trialIdentification == 'undefined') {
             formIsValid = false
@@ -42,10 +43,19 @@ export default function AddClient() {
             formIsValid = false
             setError('Check input of name')
         }
-        //put web3 validation ===== isAddress(formInput.walletAddress){ 
-        // formIsValid = false
-        // setError('Address invalid')
-        // }
+        if (formInput.walletAddress) {
+            try {
+                ethers.utils.getAddress(formInput.walletAddress)
+                console.log('success')
+            } catch (err) {
+                if (err.argument) {
+                    setError('Invalid Wallet Address')
+                } else {
+                    setError(err.argument + 'has returned the following error ' + err.code)
+                }
+
+            }
+        }
         return formIsValid;
     }
 

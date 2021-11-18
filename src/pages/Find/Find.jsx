@@ -10,7 +10,6 @@ export default function Find(props) {
     const [trials, setTrials] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState()
-    const [update, setUpdate] = useState(false)
 
     useEffect(() => {
         async function getTrials() {
@@ -22,9 +21,6 @@ export default function Find(props) {
         getTrials();
     }, []);
 
-    // if (history.location.path !== history.location.pathname) {
-    //     setUpdate(!update)
-    // }
 
     useEffect(() => {
         const timer = setTimeout(() => {

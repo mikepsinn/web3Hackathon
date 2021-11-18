@@ -12,6 +12,7 @@
     "aws-sdk": "^2.825.0",
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
+    "ethers": "^5.5.1",
     "express": "^4.17.1",
     "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
