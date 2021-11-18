@@ -9,7 +9,6 @@ module.exports = {
 };
 
 async function addClient(req, res) {
-  console.log(req.body.trialIdentification)
   try {
     const client = await new Client({
       user: req.user._id,

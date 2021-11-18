@@ -23,6 +23,7 @@ export default function AddClient() {
         trialIdentification: ''
     })
 
+
     const handleSlider = (e, value) => setFormInput({ ...formInput, ['percentageParticipated']: value });
     const handleSelect = (e, { value }) => setFormInput({ ...formInput, ['trialIdentification']: value });
 
@@ -35,7 +36,7 @@ export default function AddClient() {
     }
     async function handleValidation() {
         let formIsValid = true;
-        if (formInput.trialIdentification == '' || formInput.trialIdentification == 'undefined') {
+        if (!formInput.trialIdentification || formInput.trialIdentification == '') {
             formIsValid = false
             setError('Select a trial')
         }
@@ -44,14 +45,19 @@ export default function AddClient() {
             setError('Check input of name')
         }
         if (formInput.walletAddress) {
+
             try {
-                ethers.utils.getAddress(formInput.walletAddress)
-                console.log('success')
+                const data = await ethers.utils.getAddress(formInput.walletAddress)
+                if (data) {
+                }
+
             } catch (err) {
+
+                formIsValid = false
                 if (err.argument) {
                     setError('Invalid Wallet Address')
                 } else {
-                    setError(err.argument + 'has returned the following error ' + err.code)
+                    setError(err.argument + ' has returned the following error: ' + err.code)
                 }
 
             }
@@ -60,7 +66,7 @@ export default function AddClient() {
     }
 
     async function handleSubmit() {
-        if (handleValidation()) {
+        if (await handleValidation() == true) {
             try {
                 if (name == false) {
                     const data = await clientService.addClient({
@@ -137,7 +143,7 @@ export default function AddClient() {
                         </Header><br />
 
 
-                        <Form autoComplete="off" onSubmit={handleSubmit}>
+                        <Form autoComplete="off">
                             <div id='inputCont'>
                                 <label id='nameLabelClient' className='formLabel' style={name ? { color: 'black' } : { color: 'lightgray' }}>Name</label>
                                 <div id='checkboxCont'>
@@ -184,7 +190,7 @@ export default function AddClient() {
                                     })
                                 }
                                 onChange={handleSelect}
-                                required={true} />
+                                required />
                             <br />
 
 
@@ -204,7 +210,7 @@ export default function AddClient() {
                             <br /><br />
 
 
-                            <Button type="submit" className="btn" id="signupButton">
+                            <Button onClick={handleSubmit} type="submit" className="btn" id="signupButton">
                                 Submit
                             </Button>
 
