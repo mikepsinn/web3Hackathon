@@ -37,7 +37,7 @@ function App() {
         <Route exact path="/register">
           <SignupPage handleSignUpOrLogin={handleSignUpOrLogin} />
         </Route>
-        <Route exact path="/index">
+        <Route path="/index">
           <Home />
         </Route>
         {userService.getUser() ?
@@ -56,13 +56,15 @@ function App() {
                 <Find />
               </Route>
             </Switch>
+            <Route path="/">
+              <Redirect to='/index' />
+            </Route>
           </>
           :
-          <Redirect to='/login' />
+          <Redirect to='/index' />
         }
 
       </Switch>
-      <Footer />
     </div>
   );
 }

@@ -34,10 +34,11 @@ export default function Home() {
                 </p>
 
             </Segment>
-            <div style={{ marginTop: '1em', marginBottom: '8em' }}>
+            <div style={{ marginTop: '1em', marginBottom: '6em' }}>
                 <Link to='/login'><Button style={{ marginRight: '10em' }}>Login</Button></Link>
                 <Link to='register'><Button >Register</Button></Link>
             </div>
+            &nbsp;
         </>
     )
 }

@@ -8,6 +8,7 @@ import validator from 'validator';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
 
 export default function SignUpPage(props) {
+    console.log(props.handleSignUpOrLogin())
     const history = useHistory();
     const [error, setError] = useState('')
     const [formInput, setFormInput] = useState({
@@ -94,7 +95,8 @@ export default function SignUpPage(props) {
         if (handleValidation()) {
             try {
                 await userService.signup(formInput);
-                history.push("/index");
+                await props.handleSignUpOrLogin
+                history.push('/profile')
             } catch (err) {
                 setError(err.message)
             }

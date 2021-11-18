@@ -11,14 +11,18 @@ module.exports = {
 
 async function signup(req, res) {
   if (req.body.accessToken === ACCESS_TOKEN) {
-    const user = new User(req.body);
     try {
+      const user = new User(req.body);
       await user.save();
       const token = createJWT(user);
-      res.json({ token });
+      res.status(200).json({ token });
     } catch (err) {
       console.log('catch error', err)
-      return res.status(400).json(err);
+      if (err.keyPattern.employeeId) {
+        return res.status(455).json();
+      } else {
+        return res.status(400).json()
+      }
     }
   } else {
     return res.status(401).json({ err: 'access token invalid' })

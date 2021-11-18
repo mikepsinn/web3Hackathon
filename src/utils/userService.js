@@ -2,9 +2,6 @@ import tokenService from './tokenService';
 
 const BASE_URL = '/api/users/';
 
-
-// NOTE THIS IS configured to send of a multi/part form request
-// aka photo 
 function signup(user) {
   return fetch(BASE_URL + "signup", {
     method: "POST",
@@ -15,10 +12,11 @@ function signup(user) {
       if (res.ok) {
         return res.json()
       } else if (res.status == 401) {
-        throw new Error('invalid access token')
+        throw new Error('Invalid Access Token')
+      } else if (res.status == 455) {
+        throw new Error('Employee ID Already Taken')
       } else {
-        console.log(false)
-        return new Error("Email already taken!");
+        throw new Error('Email Already Taken');
       }
 
     })
@@ -54,3 +52,4 @@ export default {
   login,
   getUser
 };
+

@@ -13,7 +13,7 @@
 }
 #homeNavButton {
     position: absolute;
-    left: 6em;
+    left: 2em;
     margin-top: 0.5em;
     background-color: rgba(128, 128, 128, 0.204);
     padding: 0.5em 2em;
@@ -26,7 +26,7 @@
 }
 
 #navCont {
-    background-color: #4fc3f7;
+    background-color: #4fc3f770;
     height: 3.6em;
 }
 #profileIcon {
