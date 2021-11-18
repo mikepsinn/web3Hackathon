@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
@@ -12,7 +12,7 @@ import Find from '../Find/Find';
 import Home from '../Home/Home';
 
 function App() {
-
+  const history = useHistory()
   const [show, setShow] = useState(false)
   const [user, setUser] = useState(userService.getUser()) // getUser decodes our JWT token, into a javascript object
   // this object corresponds to the jwt payload which is defined in the server signup or login function that looks like 
@@ -31,16 +31,18 @@ function App() {
     <div className="App">
       <Navbar user={userService.getUser()} handleLogout={handleLogout} setShow={setShow} show={show} />
       <Switch>
+        {/* {user !== null ? */}
         <Route exact path="/login">
           <LoginPage handleSignUpOrLogin={handleSignUpOrLogin} />
         </Route>
         <Route exact path="/register">
           <SignupPage handleSignUpOrLogin={handleSignUpOrLogin} />
         </Route>
+
         <Route path="/index">
           <Home />
         </Route>
-        {userService.getUser() ?
+        {user ?
           <>
             <Switch>
               <Route exact path='/profile'>
@@ -53,19 +55,16 @@ function App() {
                 <AddTrial />
               </Route>
               <Route exact path='/find'>
-                <Find />
+                <Find user={user} />
               </Route>
             </Switch>
-            <Route path="/">
-              <Redirect to='/index' />
-            </Route>
           </>
           :
           <Redirect to='/index' />
         }
 
       </Switch>
-    </div>
+    </div >
   );
 }
 

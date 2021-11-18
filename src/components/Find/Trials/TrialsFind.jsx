@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './TrialsFind.css'
-import { Form, Grid, Loader } from 'semantic-ui-react'
+import { Form, Grid, Loader, Table, Button } from 'semantic-ui-react'
 import trialsService from '../../../utils/trialsService'
 
 
 export default function TrialsFind(props) {
-
     const [loading, setLoading] = useState(false)
     const [show, setShow] = useState(true)
     const [formInput, setFormInput] = useState({
@@ -19,6 +18,8 @@ export default function TrialsFind(props) {
         e.preventDefault()
         setShow(true)
     }
+
+
 
     function percentByTrial(client) {
         let trials = client.trials
@@ -84,18 +85,65 @@ export default function TrialsFind(props) {
         } else if (!show) {
             return (
                 <>
-                    {clients.map((client, i) => {
-                        return (
+                    <Table unstackable celled compact='very'>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell width={8}>ETH Wallet Address</Table.HeaderCell>
+                                <Table.HeaderCell width={1} >% Completed</Table.HeaderCell>
+                                {/* <Table.HeaderCell width={3}>Name</Table.HeaderCell> */}
+                            </Table.Row>
+                        </Table.Header>
 
-                            <h6 key={i}>{client.walletAddress} + {percentByTrial(client)}</h6>
-                        )
-                    })}
+                        <Table.Body>
+                            {clients.map((client, i) => {
+                                return (
+                                    <>
+                                        <Table.Row key={i}>
+                                            <Table.Cell style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
+                                            <Table.Cell>{percentByTrial(client)}</Table.Cell>
+                                        </Table.Row>
+                                    </>
+                                )
+                            })}
 
-                    <button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</button>
-                    <button>Send Money</button>
+                            {/* <Table.Row>
+                                <Table.Cell>Cell</Table.Cell>
+                                <Table.Cell>Cell</Table.Cell>
+                                <Table.Cell>Cell</Table.Cell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Table.Cell>Cell</Table.Cell>
+                                <Table.Cell>Cell</Table.Cell>
+                                <Table.Cell>Cell</Table.Cell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Table.Cell>Cell</Table.Cell>
+                                <Table.Cell>Cell</Table.Cell>
+                                <Table.Cell>Cell</Table.Cell>
+                            </Table.Row> */}
+                        </Table.Body>
+                        <Table.Footer></Table.Footer>
+                    </Table>
+                    <Button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</Button>
+                    <Button>Send Money</Button>
                 </>
             )
         }
 
     }
 }
+
+
+// {clients.map((client, i) => {
+//     return (
+//         <>
+//             <tr>
+//                 <td>{client.walletAddress}</td>
+//                 <td>{percentByTrial(client)}</td>
+//                 <td>{client.name}</td>
+//             </tr>
+
+//             {/* <h6 key={i}>{client.walletAddress} + {percentByTrial(client)}</h6> */}
+//         </>
+//     )
+// })}

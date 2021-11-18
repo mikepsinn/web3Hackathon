@@ -3,21 +3,14 @@ import { Segment, Header, Loader, Grid } from 'semantic-ui-react'
 import trialsService from '../../utils/trialsService'
 import './Find.css'
 import TrialsFind from '../../components/Find/Trials/TrialsFind'
+import { useHistory } from 'react-router-dom'
 
-export default function Find() {
-
+export default function Find(props) {
+    const history = useHistory()
     const [trials, setTrials] = useState()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState()
-
-
-
-
-
-
-
-
-
+    const [update, setUpdate] = useState(false)
 
     useEffect(() => {
         async function getTrials() {
@@ -28,15 +21,17 @@ export default function Find() {
         }
         getTrials();
     }, []);
+
+    // if (history.location.path !== history.location.pathname) {
+    //     setUpdate(!update)
+    // }
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setError(null);
         }, 3000);
         return () => clearTimeout(timer);
     }, [error]);
-
-
-    console.log(trials)
 
 
     if (loading) {
