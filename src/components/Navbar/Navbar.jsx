@@ -5,8 +5,9 @@ import './Navbar.css'
 import Dropdown from './Dropdown/Dropdown'
 import HeaderImage from '../MOLECULES/HeaderImage'
 import WelcomeHeader from '../MOLECULES/WelcomeHeader'
+import Wallet from '../Wallet/Wallet.jsx'
 
-export default function Navbar({ user, handleLogout, setShow, show }) {
+export default function Navbar({ wallet, user, handleLogout, setShow, show, connect }) {
     const location = useLocation()
     const [hover, setHover] = useState(false)
     // Navbar.handleClickOutside = () => setShow(false);
@@ -30,6 +31,7 @@ export default function Navbar({ user, handleLogout, setShow, show }) {
         <>
             <div id='navCont'>
                 <Link to='/index' id='homeNavButton' onClick={closeDropdown}>Home</Link>
+                <Wallet wallet={wallet} connect={connect} />
                 {user ?
                     (
                         <><div id='dropdownCont' style={hover ? { color: 'blue' } : { color: 'black' }} onMouseOver={handleHover} onMouseOut={handleHover} onClick={handleDropdown}>
