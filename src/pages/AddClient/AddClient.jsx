@@ -9,10 +9,24 @@ import trialsService from "../../utils/trialsService";
 import { ethers } from "ethers";
 import { NFTStorage, File } from 'nft.storage';
 import Transactor from '../../Solidity/helpers/Transactors';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 export default function AddClient() {
 
-    async function mintNFT({contract, ownerAddress, provider, gasPrice, setStatus}) {
+    const [provider, setProvider] = useState()
+
+    async function getProvider() {
+        const providerName = await new ethers.providers.Web3Provider(window.ethereum, 'any');
+        setProvider(providerName)
+        return;
+    }
+
+
+
+    getProvider()
+    console.log(provider)
+
+    async function mintNFT({ contract, ownerAddress, provider, gasPrice, setStatus }) {
 
         // First we use the nft.storage client library to add the image and metadata to IPFS / Filecoin
         // const apiKey = process.env.NFT_STORAGE_KEY;
@@ -28,17 +42,17 @@ export default function AddClient() {
             ),
         })
         console.log(metadata.url);
-      
+
         // the returned metadata.url has the IPFS URI we want to add.
         // our smart contract already prefixes URIs with "ipfs://", so we remove it before calling the `mintToken` function
         const metadataURI = metadata.url.replace(/^ipfs:\/\//, "");
-      
+
         // scaffold-eth's Transactor helper gives us a nice UI popup when a transaction is sent
         // const transactor = Transactor(provider, gasPrice);
         // const tx = await transactor(contract.mintToken(ownerAddress, metadataURI));
-      
+
         // setStatus("Blockchain transaction sent, waiting confirmation...");
-      
+
         // // Wait for the transaction to be confirmed, then get the token ID out of the emitted Transfer event.
         // const receipt = await tx.wait();
         // let tokenId = null;
@@ -51,8 +65,8 @@ export default function AddClient() {
         // }
         // setStatus(`Minted token #${tokenId}`);
         // return tokenId;
-      }
-      
+    }
+
 
 
 
@@ -122,11 +136,11 @@ export default function AddClient() {
                         trialIdentification: formInput.trialIdentification,
                         name: 'Anonymous'
                     })
-                    mintNFT('','','','','');
+                    mintNFT('', formInput.walletAddress, provider, '', '');
                     setSuccess(data.msg)
                 } else {
                     const data = await clientService.addClient(formInput)
-                    mintNFT('','','','','');
+                    mintNFT('', formInput.walletAddress, provider, '', '');
                     setSuccess(data.msg)
                 }
             } catch (err) {
