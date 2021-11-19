@@ -7,6 +7,7 @@ import clientService from '../../utils/clientService'
 import { Slider } from '@mui/material'
 import trialsService from "../../utils/trialsService";
 import { ethers } from "ethers";
+import { NFTStorage, File } from 'nft.storage';
 
 
 export default function AddClient() {
@@ -66,14 +67,28 @@ export default function AddClient() {
     }
 
     async function handleSubmit() {
-        if (await handleValidation() == true) {
+        if (await handleValidation() === true) {
             try {
+                // const apiKey = process.env.NFT_STORAGE_KEY;
+                const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE4NkU1OTlmZmY1MjA4MTZBYTQ1M2Y3OTg1OWQzNDZmQTFmN2VmNTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzNzEwMjA2MDkzMiwibmFtZSI6IkZpcnN0QVBJS2V5In0.mPCR2jq5fCcRdUbKEGXfdxY8I9b3NuAxx9i6Y0EyhCE'
+                const client = new NFTStorage({ token: apiKey })
+                const metadata = await client.store({
+                    name: 'anon',
+                    description: `${formInput.percentageParticipated} ${formInput.trialIdentification}`,
+                    image: new File(
+                        [],
+                        process.env.PUBLIC_URL + 'metamask.png',
+                        { type: 'image/png' }
+                    ),
+                })
+                console.log(metadata.url);
+
                 if (name == false) {
                     const data = await clientService.addClient({
-                        percentageParticipated: formInput.percentageParticipated,
-                        walletAddress: formInput.walletAddress,
-                        trialIdentification: formInput.trialIdentification,
-                        name: 'Anonymous'
+                        name: 'anonymous',
+                        percentageParticipated: formInput.percentageParticipated.toString(),
+                        walletAddress: formInput.walletAddress.toString(),
+                        trialIdentification: formInput.trialIdentification.toString()
                     })
                     setSuccess(data.msg)
                 } else {
