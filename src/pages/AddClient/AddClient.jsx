@@ -8,9 +8,55 @@ import { Slider } from '@mui/material'
 import trialsService from "../../utils/trialsService";
 import { ethers } from "ethers";
 import { NFTStorage, File } from 'nft.storage';
-
+import Transactor from '../../Solidity/helpers/Transactors';
 
 export default function AddClient() {
+
+    async function mintNFT({contract, ownerAddress, provider, gasPrice, setStatus}) {
+
+        // First we use the nft.storage client library to add the image and metadata to IPFS / Filecoin
+        // const apiKey = process.env.NFT_STORAGE_KEY;
+        const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE4NkU1OTlmZmY1MjA4MTZBYTQ1M2Y3OTg1OWQzNDZmQTFmN2VmNTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzNzEwMjA2MDkzMiwibmFtZSI6IkZpcnN0QVBJS2V5In0.mPCR2jq5fCcRdUbKEGXfdxY8I9b3NuAxx9i6Y0EyhCE'
+        const client = new NFTStorage({ token: apiKey })
+        const metadata = await client.store({
+            name: 'CliNFT',
+            description: `${formInput.percentageParticipated} ${formInput.trialIdentification}`,
+            image: new File(
+                [],
+                process.env.PUBLIC_URL + 'metamask.png',
+                { type: 'image/png' }
+            ),
+        })
+        console.log(metadata.url);
+      
+        // the returned metadata.url has the IPFS URI we want to add.
+        // our smart contract already prefixes URIs with "ipfs://", so we remove it before calling the `mintToken` function
+        const metadataURI = metadata.url.replace(/^ipfs:\/\//, "");
+      
+        // scaffold-eth's Transactor helper gives us a nice UI popup when a transaction is sent
+        // const transactor = Transactor(provider, gasPrice);
+        // const tx = await transactor(contract.mintToken(ownerAddress, metadataURI));
+      
+        // setStatus("Blockchain transaction sent, waiting confirmation...");
+      
+        // // Wait for the transaction to be confirmed, then get the token ID out of the emitted Transfer event.
+        // const receipt = await tx.wait();
+        // let tokenId = null;
+        // for (const event of receipt.events) {
+        //   if (event.event !== 'Transfer') {
+        //       continue
+        //   }
+        //   tokenId = event.args.tokenId.toString();
+        //   break;
+        // }
+        // setStatus(`Minted token #${tokenId}`);
+        // return tokenId;
+      }
+      
+
+
+
+
 
     const [error, setError] = useState()
     const [trials, setTrials] = useState()
@@ -69,30 +115,18 @@ export default function AddClient() {
     async function handleSubmit() {
         if (await handleValidation() === true) {
             try {
-                // const apiKey = process.env.NFT_STORAGE_KEY;
-                const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE4NkU1OTlmZmY1MjA4MTZBYTQ1M2Y3OTg1OWQzNDZmQTFmN2VmNTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzNzEwMjA2MDkzMiwibmFtZSI6IkZpcnN0QVBJS2V5In0.mPCR2jq5fCcRdUbKEGXfdxY8I9b3NuAxx9i6Y0EyhCE'
-                const client = new NFTStorage({ token: apiKey })
-                const metadata = await client.store({
-                    name: 'anon',
-                    description: `${formInput.percentageParticipated} ${formInput.trialIdentification}`,
-                    image: new File(
-                        [],
-                        process.env.PUBLIC_URL + 'metamask.png',
-                        { type: 'image/png' }
-                    ),
-                })
-                console.log(metadata.url);
-
                 if (name == false) {
                     const data = await clientService.addClient({
-                        name: 'anonymous',
-                        percentageParticipated: formInput.percentageParticipated.toString(),
-                        walletAddress: formInput.walletAddress.toString(),
-                        trialIdentification: formInput.trialIdentification.toString()
+                        percentageParticipated: formInput.percentageParticipated,
+                        walletAddress: formInput.walletAddress,
+                        trialIdentification: formInput.trialIdentification,
+                        name: 'Anonymous'
                     })
+                    mintNFT('','','','','');
                     setSuccess(data.msg)
                 } else {
                     const data = await clientService.addClient(formInput)
+                    mintNFT('','','','','');
                     setSuccess(data.msg)
                 }
             } catch (err) {
