@@ -3,12 +3,17 @@ import { parseUnits } from "@ethersproject/units";
 import { notification } from "antd";
 import Notify from "bnc-notify";
 import { BLOCKNATIVE_DAPPID } from "../constants";
+import { ethers } from 'ethers';
 
 // this should probably just be renamed to "notifier"
 // it is basically just a wrapper around BlockNative's wonderful Notify.js
 // https://docs.blocknative.com/notify
 
 export default function Transactor(provider, gasPrice, etherscan) {
+  console.log(provider);
+  console.log(gasPrice);
+  // let gasPrice = ethers.BigNumber.from(GasPrice);
+
   if (typeof provider !== "undefined") {
     // eslint-disable-next-line consistent-return
     return async tx => {
@@ -38,6 +43,8 @@ export default function Transactor(provider, gasPrice, etherscan) {
 
       try {
         let result;
+        console.log('betch')
+        console.log(tx);
         if (tx instanceof Promise) {
           console.log("AWAITING TX", tx);
           result = await tx;
