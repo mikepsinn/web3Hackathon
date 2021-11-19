@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import SignupPage from '../SignupPage/SignupPage';
@@ -15,6 +15,8 @@ import detectEthereumProvider from '@metamask/detect-provider';
 
 function App() {
   // MetaMask stuff
+  const [error, setError] = useState()
+  const [success, setSuccess] = useState()
   const ethereum = window.ethereum
   const [currentWallet, setCurrentWallet] = useState()
 
@@ -27,6 +29,7 @@ function App() {
       // For backwards compatibility reasons, if no accounts are available,
       // eth_accounts will return an empty array.
       console.error(err, 'here');
+      setError(err)
     });
 
   function handleAccountsChanged(accounts) {
@@ -36,8 +39,10 @@ function App() {
     } else if (accounts[0] !== currentAccount) {
       currentAccount = accounts[0];
       setCurrentWallet(currentAccount)
+      setSuccess('Connected to MetaMask')
     }
   }
+
 
   function connect() {
     ethereum
@@ -48,12 +53,26 @@ function App() {
           // EIP-1193 userRejectedRequest error
           // If this happens, the user rejected the connection request.
           console.log('Please connect to MetaMask.');
+          setError('Please connect to MetaMask.')
         } else {
           console.error(err);
         }
       });
   }
+  console.log(success)
+
+  useEffect(() => {
+    connect()
+  }, [error, success])
+
+
   // end MetaMask
+
+
+
+
+
+
   const history = useHistory()
   const [show, setShow] = useState(false)
   const [user, setUser] = useState(userService.getUser()) // getUser decodes our JWT token, into a javascript object

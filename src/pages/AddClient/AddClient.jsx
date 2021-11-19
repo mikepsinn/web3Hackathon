@@ -7,9 +7,14 @@ import clientService from '../../utils/clientService'
 import { Slider } from '@mui/material'
 import trialsService from "../../utils/trialsService";
 import { ethers } from "ethers";
+import { NFTStorage, File } from 'nft.storage'
+import * as constants from '../../Solidity/constants'
 
 
 export default function AddClient() {
+
+
+    const client = new NFTStorage({ token: constants.NFT_STORAGE_KEY })
 
     const [error, setError] = useState()
     const [trials, setTrials] = useState()
