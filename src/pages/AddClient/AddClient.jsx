@@ -460,19 +460,25 @@ export default function AddClient() {
         ];
 
     // Connect to the network
-    const provider = ethers.getDefaultProvider();
+    // const provider = ethers.getDefaultProvider();
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    const signer = provider.getSigner();
+    const network = provider.getNetwork();
 
     // The address from the above deployment example
     const contractAddress = "0xA398d48Dc96A12dB2bB36CdbaA743E0c0366d859";
 
     // We connect to the Contract using a Provider, so we will only
     // have read-only access to the Contract
-    const contract = new ethers.Contract(contractAddress, abi, provider);
-    // console.log(contractAddress, provider);
-    
-    console.log(contract);
+    const contract = new ethers.Contract(contractAddress, abi, signer);
 
-
+    console.log('provider');
+    console.log(provider);
+    console.log('signer');
+    console.log(signer);
+    console.log('network');
+    console.log(network);
 
     async function mintNFT({ ownerAddress }) {
 
@@ -504,13 +510,14 @@ export default function AddClient() {
         // scaffold-eth's Transactor helper gives us a nice UI popup when a transaction is sent
 
 
-        const transactor = Transactor(provider, gasPrice);
+        const transactor = Transactor(provider.getSigner(), gasPrice, signer, network);
         // console.log(await transactor());
         const tx = await transactor(contract.mintToken(ownerAddress, metadataURI));
 
         setStatus("Blockchain transaction sent, waiting confirmation...");
 
         // Wait for the transaction to be confirmed, then get the token ID out of the emitted Transfer event.
+        console.log(await tx.wait());
         const receipt = await tx.wait();
         let tokenId = null;
         for (const event of receipt.events) {
