@@ -9,7 +9,7 @@ import { ethers } from 'ethers';
 // it is basically just a wrapper around BlockNative's wonderful Notify.js
 // https://docs.blocknative.com/notify
 
-export default function Transactor(provider, gasPrice, etherscan, signer, network) {
+export default function Transactor(provider, gasPrice, signer, network, etherscan) {
 
   // let gasPrice = ethers.BigNumber.from(GasPrice);
 
@@ -20,12 +20,11 @@ export default function Transactor(provider, gasPrice, etherscan, signer, networ
       // const signer = await provider.getSigner();
       console.log(provider);
       const txSigner = await signer;
-      const txNetwork = await network;
+      const txNetwork = network;
 
       // chainId is reading as 1, yet in options.networkId, chainId read as undefined?
       console.log(await txSigner);
-      console.log(txSigner.chainId)
-      console.log(await txNetwork);
+      console.log(txNetwork);
 
       // console.log("network", txNetwork);
       const options = {

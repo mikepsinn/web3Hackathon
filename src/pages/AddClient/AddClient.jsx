@@ -10,11 +10,12 @@ import { ethers } from "ethers";
 import { NFTStorage, File } from 'nft.storage';
 import Transactor from '../../Solidity/helpers/Transactors';
 import detectEthereumProvider from '@metamask/detect-provider';
-import { BigNumber} from 'bignumber';
+import variableTest from '../../Solidity/helpers/test'
 
 export default function AddClient() {
 
     const [status, setStatus] = useState();
+    const [getNetworkStatus, setGetNetworkStatus] = useState();
 
     // The Contract interface
     const abi = [
@@ -464,7 +465,14 @@ export default function AddClient() {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
     const signer = provider.getSigner();
-    const network = provider.getNetwork();
+    // const network = provider.getNetwork();
+
+    async function getNetworkAddy() {
+        return await provider.getNetwork()
+    }
+    // let testvar;
+    getNetworkAddy().then((res) => { if (!getNetworkStatus) { setGetNetworkStatus(res) } })
+    console.log(getNetworkStatus)
 
     // The address from the above deployment example
     const contractAddress = "0xA398d48Dc96A12dB2bB36CdbaA743E0c0366d859";
@@ -472,13 +480,6 @@ export default function AddClient() {
     // We connect to the Contract using a Provider, so we will only
     // have read-only access to the Contract
     const contract = new ethers.Contract(contractAddress, abi, signer);
-
-    console.log('provider');
-    console.log(provider);
-    console.log('signer');
-    console.log(signer);
-    console.log('network');
-    console.log(network);
 
     async function mintNFT({ ownerAddress }) {
 
@@ -509,15 +510,16 @@ export default function AddClient() {
 
         // scaffold-eth's Transactor helper gives us a nice UI popup when a transaction is sent
 
+        // variableTest(provider, getNetworkStatus);
 
-        const transactor = Transactor(provider.getSigner(), gasPrice, signer, network);
-        // console.log(await transactor());
+        const transactor = Transactor(provider, gasPrice, signer, getNetworkStatus);
+        console.log(await transactor());
         const tx = await transactor(contract.mintToken(ownerAddress, metadataURI));
 
         setStatus("Blockchain transaction sent, waiting confirmation...");
 
         // Wait for the transaction to be confirmed, then get the token ID out of the emitted Transfer event.
-        console.log(await tx.wait());
+        console.log(await tx);
         const receipt = await tx.wait();
         let tokenId = null;
         for (const event of receipt.events) {
