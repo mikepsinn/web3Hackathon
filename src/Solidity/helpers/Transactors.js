@@ -10,14 +10,17 @@ import { ethers } from 'ethers';
 // https://docs.blocknative.com/notify
 
 export default function Transactor(provider, gasPrice, etherscan) {
-  console.log(provider);
-  console.log(gasPrice);
+
   // let gasPrice = ethers.BigNumber.from(GasPrice);
 
   if (typeof provider !== "undefined") {
     // eslint-disable-next-line consistent-return
     return async tx => {
-      const signer = provider.getSigner();
+
+
+      console.log(await provider.getSigner());
+      const signer = await provider.getSigner();
+
       const network = await provider.getNetwork();
       console.log("network", network);
       const options = {
@@ -43,7 +46,6 @@ export default function Transactor(provider, gasPrice, etherscan) {
 
       try {
         let result;
-        console.log('betch')
         console.log(tx);
         if (tx instanceof Promise) {
           console.log("AWAITING TX", tx);
