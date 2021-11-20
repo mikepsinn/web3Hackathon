@@ -9,7 +9,7 @@ const SALT_ROUNDS = 6;
 const clientSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   clientName: { type: String, lowercase: true, required: true },
-  walletAddress: { type: String, required: true },
+  walletAddress: { type: String, required: true, unique: true },
   trials: [{
     trialIdentification: { type: mongoose.Schema.Types.ObjectId, ref: 'Trial' },
     percentageCompleted: { type: Number },
