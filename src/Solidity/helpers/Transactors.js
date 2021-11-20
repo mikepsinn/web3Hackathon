@@ -16,17 +16,9 @@ export default function Transactor(provider, gasPrice, signer, network, ethersca
   if (typeof provider !== "undefined") {
     // eslint-disable-next-line consistent-return
     return async tx => {
-      // console.log(await provider.getSigner());
-      // const signer = await provider.getSigner();
-      console.log(provider);
       const txSigner = await signer;
       const txNetwork = network;
 
-      // chainId is reading as 1, yet in options.networkId, chainId read as undefined?
-      console.log(await txSigner);
-      console.log(txNetwork);
-
-      // console.log("network", txNetwork);
       const options = {
         dappId: BLOCKNATIVE_DAPPID, // GET YOUR OWN KEY AT https://account.blocknative.com
         system: "ethereum",

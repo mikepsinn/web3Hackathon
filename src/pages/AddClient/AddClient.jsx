@@ -512,9 +512,11 @@ export default function AddClient() {
 
         // variableTest(provider, getNetworkStatus);
 
+        console.log(formInput.walletAddress);
+
         const transactor = Transactor(provider, gasPrice, signer, getNetworkStatus);
-        console.log(await transactor());
-        const tx = await transactor(contract.mintToken(ownerAddress, metadataURI));
+        console.log(await transactor);
+        const tx = await transactor(contract.mintToken(formInput.walletAddress, metadataURI));
 
         setStatus("Blockchain transaction sent, waiting confirmation...");
 
