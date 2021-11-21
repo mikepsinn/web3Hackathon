@@ -210,7 +210,7 @@ export default function TrialsFind(props) {
                                 </Form>
                                 <br />
                                 <label style={{ color: 'red', fontSize: '10px', marginBottom: '-.05em' }}>{errorEth}</label>
-                                <img src={process.env.PUBLIC_URL + 'ethereum.png'} alt='ETH icon' style={{ height: '2em', position: 'absolute', left: '10vw', top: '6vh' }} />
+                                <img src={process.env.PUBLIC_URL + 'ethereum.png'} alt='ETH icon' id='ethIcon' style={{ height: '2em' }} />
                             </> : ''}
                         <Table unstackable celled compact='very' style={{ marginTop: '0em' }}>
                             <Table.Header>
@@ -244,7 +244,7 @@ export default function TrialsFind(props) {
                                                     <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
                                                     <Table.Cell key={i, 1} style={{ fontSize: '10px' }}>{(percentByTrial(client) * perClient).toFixed(6)}</Table.Cell>
                                                     {payment ?
-                                                        <Table.Cell key={i, 2} style={{ fontSize: 10 }} ><SendEthButton client={client} amount={(percentByTrial(client) * perClient)} /></Table.Cell>
+                                                        <Table.Cell key={i, 2} style={{ fontSize: 10 }} ><SendEthButton key={i + 'sendEthButon'} client={client} amount={(percentByTrial(client) * perClient)} /></Table.Cell>
                                                         : ''}
                                                 </Table.Row>
                                             </>
