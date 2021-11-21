@@ -475,10 +475,12 @@ export default function AddClient() {
     const imageLocal = fetch(process.env.PUBLIC_URL + 'CliNFT.jpg').then(async (res) => {
         return await res.blob()
     });
+    const apiKey2 = process.env.NFT_STORAGE_KEY
+    console.log(apiKey2)
 
     async function mintNFT({ ownerAddress }) {
 
-        const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE4NkU1OTlmZmY1MjA4MTZBYTQ1M2Y3OTg1OWQzNDZmQTFmN2VmNTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzNzEwMjA2MDkzMiwibmFtZSI6IkZpcnN0QVBJS2V5In0.mPCR2jq5fCcRdUbKEGXfdxY8I9b3NuAxx9i6Y0EyhCE'
+        const apiKey = process.env.NFT_STORAGE_KEY
         const client = new NFTStorage({ token: apiKey })
         const metadata = await client.store({
             name: 'CliNFT',

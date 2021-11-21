@@ -68,11 +68,9 @@ export default function TrialsFind(props) {
     }
 
     async function getTotals(total) {
-        const clientPayload = []
-        const totalPercents = []
-        let combined;
-        let per;
-        const reducer = (i, j) => i + j;
+        let clientPayload = [];
+        let sumPercent = 0;
+
         clients.forEach((client) => {
             client.trials.forEach((trial, i) => {
                 if (trial.trialIdentification === currentTrial) {
@@ -81,14 +79,11 @@ export default function TrialsFind(props) {
             })
         })
         clientPayload.forEach((client) => {
-            totalPercents.push(client.percentageCompleted)
+            sumPercent += client.percentageCompleted
         })
-        combined = totalPercents.reduce(reducer)
-        console.log(combined)
-        per = (combined / total) / clients.length
-        console.log(per)
-        await setPerClient(per)
-        setCompile(true)
+
+        await setPerClient(total / sumPercent)
+        setCompile(true);
     }
 
 
@@ -238,7 +233,7 @@ export default function TrialsFind(props) {
                                             <>
                                                 <Table.Row key={i}>
                                                     <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
-                                                    <Table.Cell key={i, 1} style={{ fontSize: '10px' }}>{percentByTrial(client) * perClient}</Table.Cell>
+                                                    <Table.Cell key={i, 1} style={{ fontSize: '10px' }}>{(percentByTrial(client) * perClient).toFixed(6)}</Table.Cell>
                                                 </Table.Row>
                                             </>
                                         )
