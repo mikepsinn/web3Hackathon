@@ -44,8 +44,23 @@ async function checkPayment(data) {
     });
 }
 
+async function transferFunds(data) {
+    return fetch(BASE_URL + 'transferfunds', {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer " + tokenService.getToken(),
+        },
+    }).then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Please Reload");
+    });
+}
+
 export default {
     addClient,
     mintToken,
-    checkPayment
+    checkPayment,
+    transferFunds
 };

@@ -161,7 +161,6 @@ export default function TrialsFind(props) {
                         required={true}
                     /> <Form.Button id='TrialFindButtonForm' size='mini' onClick={selectHandler}>Search</Form.Button>
                 </Form>
-
             )
         } else if (!show) {
             if (!showEth) {
@@ -197,19 +196,22 @@ export default function TrialsFind(props) {
             } else {
                 return (
                     <>
-                        <Form>
-                            <Input
-                                placeholder='Total Amount of ETH'
-                                name='ethInput'
-                                value={input.ethInput}
-                                onChange={handleInput}
-                                required
-                            ></Input>
-                            <Button onClick={handleSubmitEth} style={{ position: 'absolute', right: '2vw', color: 'darkgreen', backgroundColor: 'lightgray' }}>Compile</Button>
-                        </Form>
-                        <br />
-                        <label style={{ color: 'red', fontSize: '10px', marginBottom: '-.05em' }}>{errorEth}</label>
-                        <img src={process.env.PUBLIC_URL + 'ethereum.png'} alt='ETH icon' style={{ height: '2em', position: 'absolute', left: '10vw', top: '6vh' }} />
+                        {!payment ?
+                            <>
+                                <Form>
+                                    <Input
+                                        placeholder='Total Amount of ETH'
+                                        name='ethInput'
+                                        value={input.ethInput}
+                                        onChange={handleInput}
+                                        required
+                                    ></Input>
+                                    <Button onClick={handleSubmitEth} style={{ position: 'absolute', right: '2vw', color: 'darkgreen', backgroundColor: 'lightgray' }}>Compile</Button>
+                                </Form>
+                                <br />
+                                <label style={{ color: 'red', fontSize: '10px', marginBottom: '-.05em' }}>{errorEth}</label>
+                                <img src={process.env.PUBLIC_URL + 'ethereum.png'} alt='ETH icon' style={{ height: '2em', position: 'absolute', left: '10vw', top: '6vh' }} />
+                            </> : ''}
                         <Table unstackable celled compact='very' style={{ marginTop: '0em' }}>
                             <Table.Header>
                                 <Table.Row>
@@ -225,10 +227,9 @@ export default function TrialsFind(props) {
                                     {clients.map((client, i) => {
                                         return (
                                             <>
-                                                <Table.Row key={i}>
+                                                <Table.Row key={client + i}>
                                                     <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
                                                     <Table.Cell key={i, 1} style={{ fontSize: 10 }}>Please Compile</Table.Cell>
-
                                                 </Table.Row>
                                             </>
                                         )
@@ -239,7 +240,7 @@ export default function TrialsFind(props) {
                                     {clients.map((client, i) => {
                                         return (
                                             <>
-                                                <Table.Row key={i}>
+                                                <Table.Row key={i + client}>
                                                     <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
                                                     <Table.Cell key={i, 1} style={{ fontSize: '10px' }}>{(percentByTrial(client) * perClient).toFixed(6)}</Table.Cell>
                                                     {payment ?

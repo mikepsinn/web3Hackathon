@@ -4,9 +4,14 @@ import './AddTrial.css'
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
 import SuccessMessage from '../../components/SuccessMessage/SuccessMessage'
 import trialsService from "../../utils/trialsService";
+import { ethers } from 'ethers'
 
 
 export default function AddTrial() {
+
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    provider.getGasPrice().then((res) => { console.log(res) })
 
     const [error, setError] = useState()
     const [success, setSuccess] = useState()

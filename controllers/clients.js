@@ -6,7 +6,8 @@ const SECRET = process.env.SECRET;
 module.exports = {
   addClient,
   mintToken,
-  checkPayment
+  checkPayment,
+  transferFunds
 
 };
 
@@ -56,5 +57,16 @@ async function checkPayment(req, res) {
     }
   } catch (err) {
     res.status(400).json({ err: err })
+  }
+}
+
+async function transferFunds(req, res) {
+  try {
+    const client = await Client.findByIdAndUpdate(req.body._id, { $set: { paid: true } }, { new: true })
+    await client.save()
+    return res.status(200).json({ nsg: 'Funds Sent' })
+  } catch (err) {
+    console.log('error', err)
+    res.status(400).json({ msg: 'failed to update client in DB' })
   }
 }
