@@ -56,7 +56,7 @@ export default function SendEthButton({ client, amount, setSuccess }) {
         }
         console.log(tx);
         try {
-            signer.sendTransaction(tx).then((transaction) => {
+            await signer.sendTransaction(tx).then((transaction) => {
                 console.log(transaction)
             })
             await clientService.transferFunds(client)
