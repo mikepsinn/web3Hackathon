@@ -84,6 +84,9 @@ function App() {
         <Route path="/index">
           <Home />
         </Route>
+        <Route exact path='/'>
+          <Redirect to='/index' />
+        </Route>
         {user ?
           <>
             <Switch>
