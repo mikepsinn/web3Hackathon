@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import './TrialsFind.css'
-import { Form, Grid, Loader, Table, Button } from 'semantic-ui-react'
+import { Form, Grid, Loader, Table, Button, Input } from 'semantic-ui-react'
 import trialsService from '../../../utils/trialsService'
 import ErrorMessage from '../../ErrorMessage/ErrorMessage'
 
 
 export default function TrialsFind(props) {
     const [loading, setLoading] = useState(false)
+    const [showEth, setShowEth] = useState(false)
     const [show, setShow] = useState(true)
     const [error, setError] = useState()
+    const [compile, setCompile] = useState(false)
     const [currentTrial, setCurrentTrial] = useState()
     const [formInput, setFormInput] = useState({
         trial: ''
@@ -119,35 +121,87 @@ export default function TrialsFind(props) {
 
             )
         } else if (!show) {
-            return (
-                <>
-                    <Table unstackable celled compact='very'>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell width={8}>ETH Wallet Address</Table.HeaderCell>
-                                <Table.HeaderCell width={1} >% Completed</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+            if (!showEth) {
+                return (
+                    <>
+                        <Table unstackable celled compact='very'>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell width={8}>ETH Wallet Address</Table.HeaderCell>
+                                    <Table.HeaderCell width={1} >% Completed</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
 
-                        <Table.Body>
-                            {clients.map((client, i) => {
-                                return (
-                                    <>
-                                        <Table.Row key={i}>
-                                            <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
-                                            <Table.Cell key={i, 1}>{percentByTrial(client)}</Table.Cell>
-                                        </Table.Row>
-                                    </>
-                                )
-                            })}
-                        </Table.Body>
-                        <Table.Footer></Table.Footer>
-                    </Table>
-                    <Button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</Button>
-                    <Button onClick={handleDividends}>Send Dividends</Button>
-                    <ErrorMessage error={error} />
-                </>
-            )
+                            <Table.Body>
+                                {clients.map((client, i) => {
+                                    return (
+                                        <>
+                                            <Table.Row key={i}>
+                                                <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
+                                                <Table.Cell key={i, 1}>{percentByTrial(client)}</Table.Cell>
+                                            </Table.Row>
+                                        </>
+                                    )
+                                })}
+                            </Table.Body>
+                            <Table.Footer></Table.Footer>
+                        </Table>
+                        <Button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</Button>
+                        <Button onClick={() => { setShowEth(true) }}>Convert to ETH</Button>
+                        <ErrorMessage error={error} />
+                    </>
+                )
+            } else {
+                return (
+                    <>
+                        <Input
+                            placeholder='Total Amount of ETH'
+                            name='ethInput'
+                        ></Input>
+                        <Button style={{ position: 'absolute', right: '2vw', color: 'darkgreen', backgroundColor: 'lightgray' }}>Compile</Button>
+                        <img src={process.env.PUBLIC_URL + 'ethereum.png'} alt='ETH icon' style={{ height: '2em', position: 'absolute', left: '10vw', top: '6vh' }} />
+                        <Table unstackable celled compact='very'>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell width={8}>ETH Wallet Address</Table.HeaderCell>
+                                    <Table.HeaderCell width={1} >Eth to Send</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            {!compile ?
+                                <Table.Body>
+                                    {clients.map((client, i) => {
+                                        return (
+                                            <>
+                                                <Table.Row key={i}>
+                                                    <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
+                                                    <Table.Cell key={i, 1} style={{ fontSize: 10 }}>Please Compile</Table.Cell>
+                                                </Table.Row>
+                                            </>
+                                        )
+                                    })}
+                                </Table.Body>
+                                :
+                                <Table.Body>
+                                    {clients.map((client, i) => {
+                                        return (
+                                            <>
+                                                <Table.Row key={i}>
+                                                    <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
+                                                    <Table.Cell key={i, 1}>ETH</Table.Cell>
+                                                </Table.Row>
+                                            </>
+                                        )
+                                    })}
+                                </Table.Body>
+                            }
+                            <Table.Footer></Table.Footer>
+                        </Table>
+                        <Button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</Button>
+                        <Button onClick={() => { setShowEth(false) }}>Return</Button>
+                        <ErrorMessage error={error} />
+                    </>
+                )
+            }
         }
 
     }

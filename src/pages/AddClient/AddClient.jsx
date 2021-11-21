@@ -475,7 +475,6 @@ export default function AddClient() {
     const imageLocal = fetch(process.env.PUBLIC_URL + 'CliNFT.jpg').then(async (res) => {
         return await res.blob()
     });
-    console.log(imageLocal)
 
     async function mintNFT({ ownerAddress }) {
 
