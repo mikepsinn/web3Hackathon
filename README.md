@@ -44,6 +44,7 @@ CliNFT uses a number of open source projects to work properly:
 - [bcrypt] - hashing of passwords and names of clients in DB for safety and security
 - [IPFS] and [FileCoin] NFT.Storage utilized for saving each NFT off-chain
 - [Remix] used to deploy Solidity Smart Contracts
+- [OpenZeppelin] scaffolding for our ERC721 NFT Token
 
 
 ## Usage
@@ -81,5 +82,6 @@ MIT
    [IPFS]: <https://ipfs.io/>
    [FileCoin]: <https://filecoin.io/>
    [Remix]: <https://remix.ethereum.org/>
+   [OpenZeppelin]: <https://openzeppelin.com/>
 
 
