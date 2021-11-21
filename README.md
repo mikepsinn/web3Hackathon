@@ -46,7 +46,7 @@ CliNFT uses a number of open source projects to work properly:
 
 ## Usage
 
-View the deplyed version [Here](https://https://clinft.herokuapp.com/index/)
+View the deplyed version [Here](https://clinft.herokuapp.com/index/)
 ##### _Interaction/Dropdown Menu_
 - [Add Trial] add a unique trial ti add participants to, later track and send payments
 - [Add Client] will enable an option to add a client to the DB and mint them a token
