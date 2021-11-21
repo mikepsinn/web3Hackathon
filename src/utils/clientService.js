@@ -16,8 +16,22 @@ async function addClient(data) {
     });
 }
 
+async function mintToken(data) {
+    return fetch(BASE_URL + 'minttoken', {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer " + tokenService.getToken(),
+        },
+    }).then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Error Adding Mint to Local DB, however, Client Token Sent");
+    });
+}
 
 
 export default {
-    addClient
+    addClient,
+    mintToken
 };

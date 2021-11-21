@@ -5,6 +5,7 @@ const clientsCtrl = require('../../controllers/clients');
 /*---------- Client Routes ----------*/
 
 router.post('/addclient', clientsCtrl.addClient);
+router.post('/minttoken', clientsCtrl.mintToken);
 
 
 

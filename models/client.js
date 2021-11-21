@@ -10,6 +10,8 @@ const clientSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   clientName: { type: String, lowercase: true, required: true },
   walletAddress: { type: String, required: true, unique: true },
+  mintToken: { type: Boolean, default: false },
+  ipfs: { type: String },
   trials: [{
     trialIdentification: { type: mongoose.Schema.Types.ObjectId, ref: 'Trial' },
     percentageCompleted: { type: Number },

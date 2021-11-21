@@ -5,6 +5,7 @@ const SECRET = process.env.SECRET;
 
 module.exports = {
   addClient,
+  mintToken
 
 };
 
@@ -27,5 +28,17 @@ async function addClient(req, res) {
   } catch (err) {
     console.log('catch error', err)
     return res.status(400).json(err);
+  }
+}
+
+async function mintToken(req, res) {
+
+  try {
+    const client = await Client.findOneAndUpdate({ walletAddress: req.body.wallet }, { $set: { mintToken: true, ipfs: req.body.url } }, { new: true })
+    await client.save()
+    console.log(client)
+    return res.status(201).json({ msg: 'Token Minted for Client - Success' })
+  } catch (err) {
+    res.status(400).json(err)
   }
 }
