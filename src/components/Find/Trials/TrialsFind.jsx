@@ -39,6 +39,12 @@ export default function TrialsFind(props) {
         console.log(payload)
     }
 
+    function resetHandler() {
+        setCompile(false)
+        setShowEth(false)
+        setInput({ ethInput: '' })
+    }
+
 
     function percentByTrial(client) {
         let trials = client.trials
@@ -242,7 +248,7 @@ export default function TrialsFind(props) {
                             <Table.Footer></Table.Footer>
                         </Table>
                         <Button style={{ marginRight: '2em' }} onClick={toggle}>Select Another Trial</Button>
-                        <Button onClick={() => { setCompile(false) }}>Return</Button>
+                        <Button onClick={resetHandler}>Return</Button>
                         <ErrorMessage error={error} />
                     </>
                 )
