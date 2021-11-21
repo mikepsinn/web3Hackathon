@@ -530,11 +530,6 @@ export default function AddClient() {
         return tokenId;
     }
 
-
-
-
-
-
     const [error, setError] = useState()
     const [trials, setTrials] = useState()
     const [loading, setLoading] = useState(true)
