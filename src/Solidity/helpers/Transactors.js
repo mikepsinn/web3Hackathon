@@ -3,22 +3,26 @@ import { parseUnits } from "@ethersproject/units";
 import { notification } from "antd";
 import Notify from "bnc-notify";
 import { BLOCKNATIVE_DAPPID } from "../constants";
+import { ethers } from 'ethers';
 
 // this should probably just be renamed to "notifier"
 // it is basically just a wrapper around BlockNative's wonderful Notify.js
 // https://docs.blocknative.com/notify
 
-export default function Transactor(provider, gasPrice, etherscan) {
+export default function Transactor(provider, gasPrice, signer, network, etherscan) {
+
+  // let gasPrice = ethers.BigNumber.from(GasPrice);
+
   if (typeof provider !== "undefined") {
     // eslint-disable-next-line consistent-return
     return async tx => {
-      const signer = provider.getSigner();
-      const network = await provider.getNetwork();
-      console.log("network", network);
+      const txSigner = await signer;
+      const txNetwork = network;
+
       const options = {
         dappId: BLOCKNATIVE_DAPPID, // GET YOUR OWN KEY AT https://account.blocknative.com
         system: "ethereum",
-        networkId: network.chainId,
+        networkId: txNetwork.chainId,
         // darkMode: Boolean, // (default: false)
         transactionHandler: txInformation => {
           console.log("HANDLE TX", txInformation);
@@ -27,17 +31,18 @@ export default function Transactor(provider, gasPrice, etherscan) {
       const notify = Notify(options);
 
       let etherscanNetwork = "";
-      if (network.name && network.chainId > 1) {
-        etherscanNetwork = network.name + ".";
+      if (txNetwork.name && txNetwork.chainId > 1) {
+        etherscanNetwork = txNetwork.name + ".";
       }
 
       let etherscanTxUrl = "https://" + etherscanNetwork + "etherscan.io/tx/";
-      if (network.chainId === 100) {
+      if (txNetwork.chainId === 100) {
         etherscanTxUrl = "https://blockscout.com/poa/xdai/tx/";
       }
 
       try {
         let result;
+        console.log(tx);
         if (tx instanceof Promise) {
           console.log("AWAITING TX", tx);
           result = await tx;
@@ -49,13 +54,13 @@ export default function Transactor(provider, gasPrice, etherscan) {
             tx.gasLimit = hexlify(120000);
           }
           console.log("RUNNING TX", tx);
-          result = await signer.sendTransaction(tx);
+          result = await txSigner.sendTransaction(tx);
         }
         console.log("RESULT:", result);
         // console.log("Notify", notify);
 
         // if it is a valid Notify.js network, use that, if not, just send a default notification
-        if ([1, 3, 4, 5, 42, 100].indexOf(network.chainId) >= 0) {
+        if ([1, 3, 4, 5, 42, 100].indexOf(txNetwork.chainId) >= 0) {
           const { emitter } = notify.hash(result.hash);
           emitter.on("all", transaction => {
             return {

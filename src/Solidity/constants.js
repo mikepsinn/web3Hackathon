@@ -11,7 +11,6 @@ export const ETHERSCAN_KEY = "6EAGC2DEG6PP3M1GP1I86QJPQAUE4ESW1W";
 // BLOCKNATIVE ID FOR Notify.js:
 export const BLOCKNATIVE_DAPPID = "0b58206a-f3c0-4701-a62f-73c7243e8c77";
 
-
 export const DEFAULT_CONTRACT_NAME = "NFTMinter";
 
 export const NETWORK = chainId => {

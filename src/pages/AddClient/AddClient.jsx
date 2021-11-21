@@ -10,23 +10,480 @@ import { ethers } from "ethers";
 import { NFTStorage, File } from 'nft.storage';
 import Transactor from '../../Solidity/helpers/Transactors';
 import detectEthereumProvider from '@metamask/detect-provider';
+import variableTest from '../../Solidity/helpers/test'
 
 export default function AddClient() {
 
-    const [provider, setProvider] = useState()
+    const [status, setStatus] = useState();
+    const [getNetworkStatus, setGetNetworkStatus] = useState();
 
-    async function getProvider() {
-        const providerName = await new ethers.providers.Web3Provider(window.ethereum, 'any');
-        setProvider(providerName)
-        return;
+    // The Contract interface
+    const abi = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "tokenName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "symbol",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "approved",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Approval",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "operator",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "bool",
+                        "name": "approved",
+                        "type": "bool"
+                    }
+                ],
+                "name": "ApprovalForAll",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "from",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Transfer",
+                "type": "event"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "approve",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    }
+                ],
+                "name": "balanceOf",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "baseURI",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "getApproved",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "operator",
+                        "type": "address"
+                    }
+                ],
+                "name": "isApprovedForAll",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "metadataURI",
+                        "type": "string"
+                    }
+                ],
+                "name": "mintToken",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "name",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "ownerOf",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "from",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "safeTransferFrom",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "from",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "_data",
+                        "type": "bytes"
+                    }
+                ],
+                "name": "safeTransferFrom",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "operator",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "approved",
+                        "type": "bool"
+                    }
+                ],
+                "name": "setApprovalForAll",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "bytes4",
+                        "name": "interfaceId",
+                        "type": "bytes4"
+                    }
+                ],
+                "name": "supportsInterface",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "symbol",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "tokenByIndex",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "index",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "tokenOfOwnerByIndex",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "tokenURI",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "totalSupply",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "from",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "tokenId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "transferFrom",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+
+    // Connect to the network
+    // const provider = ethers.getDefaultProvider();
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    const signer = provider.getSigner();
+    // const network = provider.getNetwork();
+
+    async function getNetworkAddy() {
+        return await provider.getNetwork()
     }
+    // let testvar;
+    getNetworkAddy().then((res) => { if (!getNetworkStatus) { setGetNetworkStatus(res) } })
+    console.log(getNetworkStatus)
 
+    // The address from the above deployment example
+    const contractAddress = "0xA398d48Dc96A12dB2bB36CdbaA743E0c0366d859";
 
+    // We connect to the Contract using a Provider, so we will only
+    // have read-only access to the Contract
+    const contract = new ethers.Contract(contractAddress, abi, signer);
 
-    getProvider()
-    console.log(provider)
+    async function mintNFT({ ownerAddress }) {
 
-    async function mintNFT({ contract, ownerAddress, provider, gasPrice, setStatus }) {
+        // console.log(await contract.estimateGas.getValue());
 
         // First we use the nft.storage client library to add the image and metadata to IPFS / Filecoin
         // const apiKey = process.env.NFT_STORAGE_KEY;
@@ -34,7 +491,7 @@ export default function AddClient() {
         const client = new NFTStorage({ token: apiKey })
         const metadata = await client.store({
             name: 'CliNFT',
-            description: `${formInput.percentageParticipated} ${formInput.trialIdentification}`,
+            description: `Trial ID: ${formInput.trialIdentification} Participation Percentage: ${formInput.percentageParticipated} `,
             image: new File(
                 [],
                 process.env.PUBLIC_URL + 'metamask.png',
@@ -43,28 +500,39 @@ export default function AddClient() {
         })
         console.log(metadata.url);
 
+        const provider = await new ethers.providers.Web3Provider(window.ethereum, 'any');
+        const gasPrice = await provider.getGasPrice()._hex;
+
+
         // the returned metadata.url has the IPFS URI we want to add.
         // our smart contract already prefixes URIs with "ipfs://", so we remove it before calling the `mintToken` function
         const metadataURI = metadata.url.replace(/^ipfs:\/\//, "");
 
         // scaffold-eth's Transactor helper gives us a nice UI popup when a transaction is sent
-        // const transactor = Transactor(provider, gasPrice);
-        // const tx = await transactor(contract.mintToken(ownerAddress, metadataURI));
 
-        // setStatus("Blockchain transaction sent, waiting confirmation...");
+        // variableTest(provider, getNetworkStatus);
 
-        // // Wait for the transaction to be confirmed, then get the token ID out of the emitted Transfer event.
-        // const receipt = await tx.wait();
-        // let tokenId = null;
-        // for (const event of receipt.events) {
-        //   if (event.event !== 'Transfer') {
-        //       continue
-        //   }
-        //   tokenId = event.args.tokenId.toString();
-        //   break;
-        // }
-        // setStatus(`Minted token #${tokenId}`);
-        // return tokenId;
+        console.log(formInput.walletAddress);
+
+        const transactor = Transactor(provider, gasPrice, signer, getNetworkStatus);
+        console.log(await transactor);
+        const tx = await transactor(contract.mintToken(formInput.walletAddress, metadataURI));
+
+        setStatus("Blockchain transaction sent, waiting confirmation...");
+
+        // Wait for the transaction to be confirmed, then get the token ID out of the emitted Transfer event.
+        console.log(await tx);
+        const receipt = await tx.wait();
+        let tokenId = null;
+        for (const event of receipt.events) {
+          if (event.event !== 'Transfer') {
+              continue
+          }
+          tokenId = event.args.tokenId.toString();
+          break;
+        }
+        setStatus(`Minted token #${tokenId}`);
+        return tokenId;
     }
 
 
@@ -136,11 +604,11 @@ export default function AddClient() {
                         trialIdentification: formInput.trialIdentification,
                         name: 'Anonymous'
                     })
-                    mintNFT('', formInput.walletAddress, provider, '', '');
+                    mintNFT(formInput.walletAddress);
                     setSuccess(data.msg)
                 } else {
                     const data = await clientService.addClient(formInput)
-                    mintNFT('', formInput.walletAddress, provider, '', '');
+                    mintNFT(formInput.walletAddress);
                     setSuccess(data.msg)
                 }
             } catch (err) {
