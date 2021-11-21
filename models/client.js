@@ -12,6 +12,7 @@ const clientSchema = new mongoose.Schema({
   walletAddress: { type: String, required: true, unique: true },
   mintToken: { type: Boolean, default: false },
   ipfs: { type: String },
+  paid: { type: Boolean, default: false },
   trials: [{
     trialIdentification: { type: mongoose.Schema.Types.ObjectId, ref: 'Trial' },
     percentageCompleted: { type: Number },

@@ -4,6 +4,7 @@ import { Form, Grid, Loader, Table, Button, Input } from 'semantic-ui-react'
 import trialsService from '../../../utils/trialsService'
 import ErrorMessage from '../../ErrorMessage/ErrorMessage'
 import validator from 'validator';
+import SendEthButton from '../../MOLECULES/SendEthButton/SendEthButton'
 
 
 export default function TrialsFind(props) {
@@ -12,6 +13,7 @@ export default function TrialsFind(props) {
     const [show, setShow] = useState(true)
     const [errorEth, setErrorEth] = useState()
     const [error, setError] = useState()
+    const [payment, setPayment] = useState(false)
     const [perClient, setPerClient] = useState()
     const [input, setInput] = useState({
         ethInput: ''
@@ -43,6 +45,7 @@ export default function TrialsFind(props) {
         setCompile(false)
         setShowEth(false)
         setInput({ ethInput: '' })
+        setPayment(false)
     }
 
 
@@ -84,6 +87,7 @@ export default function TrialsFind(props) {
 
         await setPerClient(total / sumPercent)
         setCompile(true);
+        setPayment(true)
     }
 
 
@@ -211,6 +215,9 @@ export default function TrialsFind(props) {
                                 <Table.Row>
                                     <Table.HeaderCell width={8}>ETH Wallet Address</Table.HeaderCell>
                                     <Table.HeaderCell width={1} >Eth to Send</Table.HeaderCell>
+                                    {payment ?
+                                        <Table.HeaderCell width={3}>ETH Wallet Address</Table.HeaderCell>
+                                        : ''}
                                 </Table.Row>
                             </Table.Header>
                             {!compile ?
@@ -221,6 +228,7 @@ export default function TrialsFind(props) {
                                                 <Table.Row key={i}>
                                                     <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
                                                     <Table.Cell key={i, 1} style={{ fontSize: 10 }}>Please Compile</Table.Cell>
+
                                                 </Table.Row>
                                             </>
                                         )
@@ -234,6 +242,9 @@ export default function TrialsFind(props) {
                                                 <Table.Row key={i}>
                                                     <Table.Cell key={i, 0} style={{ fontSize: '10px' }}>{client.walletAddress}</Table.Cell>
                                                     <Table.Cell key={i, 1} style={{ fontSize: '10px' }}>{(percentByTrial(client) * perClient).toFixed(6)}</Table.Cell>
+                                                    {payment ?
+                                                        <Table.Cell key={i, 2} style={{ fontSize: 10 }} ><SendEthButton client={client} amount={(percentByTrial(client) * perClient)} /></Table.Cell>
+                                                        : ''}
                                                 </Table.Row>
                                             </>
                                         )

@@ -6,6 +6,7 @@ const clientsCtrl = require('../../controllers/clients');
 
 router.post('/addclient', clientsCtrl.addClient);
 router.post('/minttoken', clientsCtrl.mintToken);
+router.post('/checkpayment', clientsCtrl.checkPayment);
 
 
 

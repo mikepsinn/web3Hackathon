@@ -5,7 +5,8 @@ const SECRET = process.env.SECRET;
 
 module.exports = {
   addClient,
-  mintToken
+  mintToken,
+  checkPayment
 
 };
 
@@ -40,5 +41,20 @@ async function mintToken(req, res) {
     return res.status(201).json({ msg: 'Token Minted for Client - Success' })
   } catch (err) {
     res.status(400).json(err)
+  }
+}
+
+async function checkPayment(req, res) {
+  try {
+    const client = await Client.findById(req.body._id)
+    if (client.paid == true) {
+      return res.status(200).json({ paid: true })
+    } else if (client.paid == false) {
+      return res.status(200).json({ paid: false })
+    } else {
+      return res.status(201).json({ paid: undefined })
+    }
+  } catch (err) {
+    res.status(400).json({ err: err })
   }
 }
