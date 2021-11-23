@@ -9,7 +9,7 @@
 
 ##
 
-CliNFTs is an application developed for the [ETHGlobal Web3 Jam Hackathon] (https://jam.ethglobal.com/). 
+CliNFTs is an application developed for the [ETHGlobal Web3 Jam Hackathon](https://jam.ethglobal.com/). 
 
 CliNFTs allows a 'clinician' or 'pharma company' to pay back its users.
 Should a medication go to trial, CliNFTs allows the application to:
@@ -28,7 +28,7 @@ Should a medication go to trial, CliNFTs allows the application to:
 
 
 
-> Currently, CliNFTs works on the Rinkeby Testnet. You can see all transactions interacting with the block chain, and find their NFT on IPFS, as well as validate through Etherscan.io and validators. [CliNFT minting contract] (https://rinkeby.etherscan.io/address/0xa398d48dc96a12db2bb36cdbaa743e0c0366d859).
+> Currently, CliNFTs works on the Rinkeby Testnet. You can see all transactions interacting with the block chain, and find their NFT on IPFS, as well as validate through Etherscan.io and validators. [CliNFT minting contract](https://rinkeby.etherscan.io/address/0xa398d48dc96a12db2bb36cdbaa743e0c0366d859).
 
 
 ## Tech
