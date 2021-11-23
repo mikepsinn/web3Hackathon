@@ -9,31 +9,31 @@
 
 ##
 
-CliNFT is an application developed for a Web3 NFT.Storage and FileCoin Hackathon concept project. 
+CliNFTs is an application developed for the [ETHGlobal Web3 Jam Hackathon] (https://jam.ethglobal.com/). 
 
-CliNFT's allows a 'clinician' or 'pharma company' ti pay back its users.
-Should a medication go to trial, CliNFT allows the application to:
-- Create a unique trial 
+CliNFTs allows a 'clinician' or 'pharma company' to pay back its users.
+Should a medication go to trial, CliNFTs allows the application to:
+- Create a unique clinical trial 
 - Add a client to the selected trial as needed
 - View all clients, wallet addresses and participation based upon that trial
-- Mint NFT's
-- Send ETH payments
+- Mint NFT\s
+- Send ETH payments to NFT holders
 
 ## Features
-- Mint an NFT with the trial Identification and percentage participated of that trial
+- Mint an NFT with the trial Identification and percentage participation in that trial
 - Store that NFT on IPFS
 - Pay royalties to participants of the trial based upon their participation
-- send ETH payments through the application
-- and most importantly: utilize web3 ✨Magic ✨
+- Send ETH payments through the application
+- And most importantly: utilize web3 ✨Magic ✨
 
 
 
-> Currently, CliNFT works on the Rinkeby Testnet. you are able to see all transactions interacting with the block chain, and find their NFT on IPFS, as well as validate through Etherscan.io and validators. 
+> Currently, CliNFTs works on the Rinkeby Testnet. You can see all transactions interacting with the block chain, and find their NFT on IPFS, as well as validate through Etherscan.io and validators. [CliNFT minting contract] (https://rinkeby.etherscan.io/address/0xa398d48dc96a12db2bb36cdbaa743e0c0366d859).
 
 
 ## Tech
 
-CliNFT uses a number of open source projects to work properly:
+CliNFTs uses a number of open source projects to work properly:
 
 - [ReactJS] - S.P.A. technology, front-end JavaScript library for building user interfaces based on UI components
 - [EthersJS] - awesome web3 library to interact with the blockchain 
