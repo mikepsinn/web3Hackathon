@@ -49,7 +49,7 @@ CliNFTs uses a number of open source projects to work properly:
 
 ## Usage
 
-View the deplyed version [Here](https://clinft.herokuapp.com/index/)
+View the deployed version [Here](https://clinft.herokuapp.com/index/)
 ##### _Interaction/Dropdown Menu_
 - [Add Trial] add a unique trial ti add participants to, later track and send payments
 - [Add Client] will enable an option to add a client to the DB and mint them a token
@@ -59,7 +59,7 @@ View the deplyed version [Here](https://clinft.herokuapp.com/index/)
 ###### _Things to know/note:_
 - [access token] should you want to create your own 'Employee ID', the access code is `11223344`
 - [employee ID] on signup page is unique.
-- [walet address'] are unique, can only be used once in the DB
+- [wallet address'] are unique, can only be used once in the DB
 - [Mint NFT] once minted, and sent, cannot mint to same address again
 - [send payment] once a payment has been sent and verified, it cannot be sent to same address again
 
